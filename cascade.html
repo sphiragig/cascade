@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cascade Window & Glass Co. | Premium Glass & Window Services</title>
+  <style>
+    :root {
+      --ink: #0c1726;
+      --muted: #667085;
+      --soft: #f5f8fb;
+      --glass: rgba(255,255,255,.76);
+      --line: rgba(15, 23, 42, .10);
+      --blue: #1d6fa3;
+      --deep: #093657;
+      --cyan: #7bd8ff;
+      --gold: #d9a441;
+      --white: #ffffff;
+      --shadow: 0 24px 70px rgba(16, 24, 40, .14);
+      --radius: 28px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink);
+      background: var(--soft);
+      line-height: 1.5;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { max-width: 100%; display: block; }
+
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(18px);
+      background: rgba(255,255,255,.82);
+      border-bottom: 1px solid var(--line);
+    }
+
+    .nav {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 850;
+      letter-spacing: -.03em;
+      font-size: 1.02rem;
+    }
+
+    .brand-mark {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      background: linear-gradient(135deg, var(--deep), var(--blue) 55%, var(--cyan));
+      display: grid;
+      place-items: center;
+      color: var(--white);
+      box-shadow: 0 14px 30px rgba(29,111,163,.26);
+    }
+
+    .brand-mark svg { width: 25px; height: 25px; }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 26px;
+      color: #344054;
+      font-size: .94rem;
+      font-weight: 650;
+    }
+
+    .nav-cta, .btn-primary, .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      border-radius: 999px;
+      font-weight: 800;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+      cursor: pointer;
+      border: 0;
+    }
+
+    .nav-cta, .btn-primary {
+      color: var(--white);
+      background: linear-gradient(135deg, var(--deep), var(--blue));
+      box-shadow: 0 16px 34px rgba(9,54,87,.25);
+    }
+
+    .nav-cta { padding: 12px 18px; font-size: .92rem; }
+    .btn-primary, .btn-secondary { padding: 15px 22px; font-size: 1rem; }
+    .btn-secondary { background: var(--white); color: var(--deep); border: 1px solid var(--line); }
+    .nav-cta:hover, .btn-primary:hover, .btn-secondary:hover { transform: translateY(-2px); }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(123,216,255,.34), transparent 32%),
+        radial-gradient(circle at 85% 5%, rgba(217,164,65,.22), transparent 30%),
+        linear-gradient(180deg, #ffffff, #eef6fb);
+    }
+
+    .hero-inner {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 86px 0 70px;
+      display: grid;
+      grid-template-columns: 1.05fr .95fr;
+      gap: 54px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 13px;
+      border: 1px solid rgba(29,111,163,.18);
+      border-radius: 999px;
+      background: rgba(255,255,255,.72);
+      color: var(--deep);
+      font-size: .84rem;
+      font-weight: 800;
+      box-shadow: 0 10px 30px rgba(16,24,40,.06);
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      background: var(--gold);
+      box-shadow: 0 0 0 6px rgba(217,164,65,.16);
+    }
+
+    h1 {
+      font-size: clamp(3rem, 7vw, 5.85rem);
+      line-height: .93;
+      letter-spacing: -.075em;
+      margin: 22px 0 22px;
+      max-width: 780px;
+    }
+
+    .hero p {
+      font-size: 1.18rem;
+      color: #475467;
+      max-width: 640px;
+      margin: 0 0 30px;
+    }
+
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; }
+
+    .trust-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-top: 34px;
+      max-width: 680px;
+    }
+
+    .trust-card {
+      padding: 16px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.74);
+      border: 1px solid var(--line);
+    }
+
+    .trust-card strong { display: block; font-size: 1.3rem; letter-spacing: -.04em; }
+    .trust-card span { color: var(--muted); font-size: .9rem; }
+
+    .visual-card {
+      position: relative;
+      min-height: 560px;
+      border-radius: 38px;
+      background:
+        linear-gradient(135deg, rgba(12,23,38,.04), rgba(12,23,38,.12)),
+        url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=85') center/cover;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+    }
+
+    .visual-card:before {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border: 1px solid rgba(255,255,255,.62);
+      border-radius: 28px;
+      pointer-events: none;
+    }
+
+    .glass-panel {
+      position: absolute;
+      left: 24px;
+      right: 24px;
+      bottom: 24px;
+      padding: 22px;
+      border-radius: 26px;
+      background: rgba(255,255,255,.84);
+      backdrop-filter: blur(18px);
+      box-shadow: 0 20px 50px rgba(16,24,40,.18);
+      border: 1px solid rgba(255,255,255,.75);
+    }
+
+    .glass-panel h3 { margin: 0 0 6px; font-size: 1.4rem; letter-spacing: -.04em; }
+    .glass-panel p { margin: 0; color: var(--muted); font-size: .96rem; }
+
+    .section {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      padding: 92px 0;
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
+      gap: 24px;
+      margin-bottom: 30px;
+    }
+
+    .kicker { color: var(--blue); font-weight: 900; letter-spacing: .12em; text-transform: uppercase; font-size: .75rem; }
+    h2 { font-size: clamp(2.1rem, 4vw, 3.55rem); line-height: 1; letter-spacing: -.06em; margin: 10px 0 0; }
+    .section-head p { color: var(--muted); max-width: 460px; margin: 0; }
+
+    .services {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .service-card {
+      border-radius: var(--radius);
+      background: var(--white);
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 50px rgba(16,24,40,.08);
+      overflow: hidden;
+    }
+
+    .service-image {
+      height: 230px;
+      overflow: hidden;
+      background: #eef2f6;
+    }
+
+    .service-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .service-body { padding: 24px; }
+    .service-body h3 { margin: 0 0 10px; font-size: 1.36rem; letter-spacing: -.035em; }
+    .service-body p { margin: 0 0 18px; color: var(--muted); }
+
+    .mini-list { display: grid; gap: 9px; color: #344054; font-size: .94rem; }
+    .mini-list span:before { content: "✓"; color: var(--blue); font-weight: 900; margin-right: 9px; }
+
+    .why {
+      display: grid;
+      grid-template-columns: .95fr 1.05fr;
+      gap: 42px;
+      align-items: center;
+      background: var(--ink);
+      color: var(--white);
+      border-radius: 40px;
+      padding: 46px;
+      box-shadow: var(--shadow);
+    }
+
+    .why h2 { margin-bottom: 20px; }
+    .why p { color: rgba(255,255,255,.74); }
+    .why-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+    .why-item { padding: 20px; border-radius: 22px; background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12); }
+    .why-item strong { display: block; margin-bottom: 6px; font-size: 1.05rem; }
+    .why-item span { color: rgba(255,255,255,.68); font-size: .92rem; }
+
+    .reviews {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .review {
+      padding: 26px;
+      border-radius: var(--radius);
+      background: var(--white);
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 50px rgba(16,24,40,.07);
+    }
+
+    .stars { color: var(--gold); letter-spacing: 2px; margin-bottom: 16px; }
+    .review p { color: #475467; margin: 0 0 20px; }
+    .review strong { display: block; }
+
+    .booking-wrap {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 28px;
+      align-items: stretch;
+    }
+
+    .booking-info, .booking-form {
+      border-radius: 34px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      box-shadow: 0 18px 50px rgba(16,24,40,.08);
+      padding: 34px;
+    }
+
+    .booking-info {
+      background:
+        radial-gradient(circle at 15% 15%, rgba(123,216,255,.22), transparent 34%),
+        linear-gradient(145deg, #ffffff, #eef7fc);
+    }
+
+    .contact-row {
+      display: grid;
+      gap: 14px;
+      margin-top: 26px;
+    }
+
+    .contact-chip {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 16px;
+      border-radius: 20px;
+      background: rgba(255,255,255,.76);
+      border: 1px solid var(--line);
+    }
+
+    .icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      background: #e8f5fb;
+      color: var(--blue);
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    form { display: grid; gap: 16px; }
+    .form-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+    label { display: grid; gap: 8px; font-size: .86rem; color: #344054; font-weight: 800; }
+    input, select, textarea {
+      width: 100%;
+      border: 1px solid rgba(16,24,40,.14);
+      border-radius: 16px;
+      padding: 14px 15px;
+      font: inherit;
+      outline: 0;
+      background: #fbfdff;
+      color: var(--ink);
+    }
+    textarea { resize: vertical; min-height: 116px; }
+    input:focus, select:focus, textarea:focus { border-color: var(--blue); box-shadow: 0 0 0 4px rgba(29,111,163,.12); }
+    .form-note { color: var(--muted); font-size: .88rem; margin: 0; }
+
+    .footer {
+      background: #081522;
+      color: rgba(255,255,255,.72);
+      padding: 38px 0;
+    }
+
+    .footer-inner {
+      width: min(1180px, calc(100% - 36px));
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .footer strong { color: var(--white); }
+
+    @media (max-width: 900px) {
+      .nav-links { display: none; }
+      .hero-inner, .why, .booking-wrap { grid-template-columns: 1fr; }
+      .visual-card { min-height: 430px; }
+      .services, .reviews { grid-template-columns: 1fr; }
+      .section-head { display: block; }
+      .section-head p { margin-top: 14px; }
+      .trust-strip, .why-grid, .form-grid { grid-template-columns: 1fr; }
+      .why { padding: 28px; border-radius: 30px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <nav class="nav">
+      <a class="brand" href="#top" aria-label="Cascade Window and Glass home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 4h16v16H4V4Zm8 0v16M4 12h16" stroke="currentColor" stroke-width="2"/></svg>
+        </span>
+        <span>Cascade Window & Glass Co.</span>
+      </a>
+      <div class="nav-links">
+        <a href="#services">Services</a>
+        <a href="#why">Why Us</a>
+        <a href="#reviews">Reviews</a>
+        <a href="#book">Book</a>
+      </div>
+      <a class="nav-cta" href="tel:4258764417">Call (425) 876-4417</a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <span class="eyebrow"><span class="dot"></span> Family-owned. Locally operated.</span>
+          <h1>Glass and window service that feels effortless.</h1>
+          <p>Your premier source for residential and commercial glass solutions. From failed glass units to custom showers and window replacement, Cascade Window & Glass is there when you need us.</p>
+          <div class="hero-actions">
+            <a class="btn-primary" href="#book">Book a Free Estimate</a>
+            <a class="btn-secondary" href="mailto:CascadeWindowAndGlass@outlook.com">Email Us</a>
+          </div>
+          <div class="trust-strip" aria-label="Key benefits">
+            <div class="trust-card"><strong>Fast</strong><span>Responsive appointments</span></div>
+            <div class="trust-card"><strong>Local</strong><span>Serving nearby homes & businesses</span></div>
+            <div class="trust-card"><strong>Clean</strong><span>Professional installs & cleanup</span></div>
+          </div>
+        </div>
+        <div class="visual-card" role="img" aria-label="Modern home window and glass installation">
+          <div class="glass-panel">
+            <h3>Premium glass work without the hassle</h3>
+            <p>Clear communication, accurate measurements, fair pricing, and a polished finish.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="services">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Services</div>
+          <h2>Built for homes, rentals, and commercial spaces.</h2>
+        </div>
+        <p>Showcase the work visually, explain the value quickly, and guide visitors directly into a quote request.</p>
+      </div>
+      <div class="services">
+        <article class="service-card">
+          <div class="service-image">
+            <img src="frameless_transim.jpg" alt="Frameless Steamer Shower" />
+          </div>
+          <div class="service-body">
+            <h3>Frameless Steamer Shower</h3>
+            <p>Frameless steamer shower with adjustable transom for a sleek, modern luxury bathroom finish.</p>
+            <div class="mini-list"><span>Adjustable transom system</span><span>Luxury frameless finish</span><span>Custom measured installation</span></div>
+          </div>
+        </article>
+        <article class="service-card">
+          <div class="service-image">
+            <img src="pet_door.jpg" alt="Patio Door with Pet Door" />
+          </div>
+          <div class="service-body">
+            <h3>Patio Door with Pet Door</h3>
+            <p>Integrated pet door solutions designed seamlessly into modern patio sliding doors.</p>
+            <div class="mini-list"><span>Integrated pet access</span><span>Modern sliding patio systems</span><span>Energy efficient glass options</span></div>
+          </div>
+        </article>
+        <article class="service-card">
+          <div class="service-image">
+            <img src="full_replacement.jpg" alt="Old Vinyl Window Replacement" />
+          </div>
+          <div class="service-body">
+            <h3>Old Vinyl Window Replacement</h3>
+            <p>Old vinyl window with trim removed and upgraded with clean modern replacement systems.</p>
+            <div class="mini-list"><span>Trim removal & replacement</span><span>Energy efficient upgrades</span><span>Clean finishing & sealing</span></div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="why">
+      <div class="why">
+        <div>
+          <div class="kicker">Why Cascade</div>
+          <h2>Small-company care. High-end finish.</h2>
+          <p>This design positions Cascade as trustworthy, responsive, and polished. The goal is to make the visitor feel confident enough to call or book without overthinking.</p>
+        </div>
+        <div class="why-grid">
+          <div class="why-item"><strong>Personalized service</strong><span>Family-owned support with a real person behind every project.</span></div>
+          <div class="why-item"><strong>Fair pricing</strong><span>Clear estimates and practical repair-first options when possible.</span></div>
+          <div class="why-item"><strong>Quick turnaround</strong><span>Designed to capture urgent repair leads and weekend inquiries.</span></div>
+          <div class="why-item"><strong>Professional finish</strong><span>Quality installation, clean job sites, and polished presentation.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="reviews">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Reviews</div>
+          <h2>What customers are saying.</h2>
+        </div>
+        <p>Real social proof helps this local business convert visitors faster than a basic contact page.</p>
+      </div>
+      <div class="reviews">
+        <article class="review">
+          <div class="stars">★★★★★</div>
+          <p>“Laslo came out within the hour on a Saturday. Very professional and kind. Priced significantly less than competitors.”</p>
+          <strong>Wesley VanDevanter</strong>
+        </article>
+        <article class="review">
+          <div class="stars">★★★★★</div>
+          <p>“Very reasonable price. Arrived on time, very professional, and cleaned up the site really well.”</p>
+          <strong>Pakoris Gunapala</strong>
+        </article>
+        <article class="review">
+          <div class="stars">★★★★★</div>
+          <p>“Fantastic. Kept me informed during the process of replacing safety glass for a client of mine.”</p>
+          <strong>Terry D</strong>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="book">
+      <div class="section-head">
+        <div>
+          <div class="kicker">Booking</div>
+          <h2>Request a free estimate.</h2>
+        </div>
+        <p>A booking flow makes the site feel modern and helps capture leads before they leave.</p>
+      </div>
+      <div class="booking-wrap">
+        <aside class="booking-info">
+          <h3>There when you need us.</h3>
+          <p>Call directly for urgent glass needs or send project details through the form. This can later connect to Google Calendar, CRM, SMS, or an AI receptionist.</p>
+          <div class="contact-row">
+            <a class="contact-chip" href="tel:4258764417"><span class="icon">☎</span><span><strong>Call</strong><br />(425) 876-4417</span></a>
+            <a class="contact-chip" href="mailto:CascadeWindowAndGlass@outlook.com"><span class="icon">✉</span><span><strong>Email</strong><br />CascadeWindowAndGlass@outlook.com</span></a>
+            <div class="contact-chip"><span class="icon">⌚</span><span><strong>Hours</strong><br />Mon-Fri 8am-5pm. Sat-Sun 9am-4pm.</span></div>
+          </div>
+        </aside>
+
+        <form class="booking-form" onsubmit="event.preventDefault(); alert('Demo booking submitted. Connect this form to email, CRM, or calendar next.');">
+          <div class="form-grid">
+            <label>Full Name<input type="text" placeholder="Your name" required /></label>
+            <label>Phone<input type="tel" placeholder="(425) 000-0000" required /></label>
+          </div>
+          <div class="form-grid">
+            <label>Email<input type="email" placeholder="you@email.com" /></label>
+            <label>Service Needed
+              <select required>
+                <option value="">Select service</option>
+                <option>Glass replacement</option>
+                <option>Window replacement</option>
+                <option>Custom shower glass</option>
+                <option>Commercial glass</option>
+                <option>Not sure yet</option>
+              </select>
+            </label>
+          </div>
+          <div class="form-grid">
+            <label>Preferred Date<input type="date" required /></label>
+            <label>Preferred Time
+              <select required>
+                <option value="">Select time</option>
+                <option>Morning</option>
+                <option>Afternoon</option>
+                <option>Weekend</option>
+              </select>
+            </label>
+          </div>
+          <label>Project Details<textarea placeholder="Tell us what happened, approximate size, location, or upload photos in the next version."></textarea></label>
+          <button class="btn-primary" type="submit">Request Estimate</button>
+          <p class="form-note">Prototype form only. Next step: connect to email notification, Google Calendar, SMS confirmation, and CRM pipeline.</p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+      <div><strong>Cascade Window & Glass Co.</strong><br />Residential and commercial glass solutions.</div>
+      <div>© 2026 Cascade Window & Glass Co. All rights reserved.</div>
+    </div>
+  </footer>
+</body>
+</html>
